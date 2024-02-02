@@ -191,6 +191,7 @@ where custid =5;
 
 
 
+
 from Customers;
 
 select *
