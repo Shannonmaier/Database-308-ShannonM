@@ -169,7 +169,21 @@ select *
 from orders
 where date_part('month',dateordered)= 01;
 
+---8. List all	fields for orders in February of any year of US$23,000	or	more.
+select *
+from orders
+where date_part('month', dateordered) = 02 and totalusd >=23000;
 
+
+---9.List all orders from the customer whose id	is 007.
+select *
+from orders
+where custid =7;
+
+---10. List all orders from the	customer whose id is 005.
+select *
+from orders
+where custid =5;
 
 
 
