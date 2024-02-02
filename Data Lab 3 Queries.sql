@@ -130,18 +130,44 @@ VALUES            (1011,     '2024-01-22',    001,     002, 'p01',             1
                   (1026,     '2022-05-04',    008,     005, 'p03',              808,  47277.29);
 
 
--- SQL statements for displaying this example data:
-select *
-from People;
-
-select *
-
 ---1. List	the	order	number	and	total	dollars	of	all	orders.
 select ordernum, totalusd
 from Orders;
 
 
+---2. List the last name and home	city of	people	whosep refix is	“Ms.”.
+select firstname,lastname,homecity
+from people
+where prefix = 'Ms.';
 
+---3. List	id,	name,and quantity on hand of products with quantity	more than 1007.
+select prodid, name, qtyonhand
+from products
+where qtyonhand > 47;
+
+---4. List the first name and home city of people born in the 1920s.
+select firstname, homecity
+from people
+where date_part('year',dob)>= 1920 and date_part('year',dob)< 1930 ;
+
+
+---5. List the prefix and last name	of people who are not “Mr.”.
+
+select prefix, lastname
+from people
+where not prefix = 'Mr.';
+
+
+---6. List all fields for products in neither Dallas nor Duluth	that cost US$17	or less.
+select *
+from products
+where not (city = 'Dallas' or city  = 'Duluth') AND priceusd <17;
+
+
+---7. List	all	fields	for	orders	in	January	of	any	year.
+select *
+from orders
+where date_part('month',dateordered)= 01;
 
 
 
