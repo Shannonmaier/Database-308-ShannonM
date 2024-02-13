@@ -179,9 +179,82 @@ where prodid in
 	('p01','p03')
 order by custid ASC;
 
+/*6. Get the ID of	customers who ordered both products	p01 and p03. List the IDs in order	
+from highest to	lowest.	Include	each ID	only once.*/
+
+select DISTINCT custid
+from Orders
+where custid in 
+	(select custid
+	 from Orders
+	 where prodid = 'p03'
+	 INTERSECT
+	 select custid
+	 from Orders
+	 where prodid = 'p01')
+order by custid DESC;	
+
+/*7. Get	the	first	and	last	names	of	agents	who	sold	products	p05	or	p07	in	order	by	last	
+name	from	A	to	Z.*/
+
+select firstname, lastname
+from People
+where pid in
+	(select pid 
+	 from agents
+	where pid in
+		(select agentId
+		from Orders
+		where prodid = 'p05' or prodid = 'p07'))
+order by lastname ASC;
+
+/*8. Get	the	home	city	and	birthday	of	agents	booking	an	order	for	the	customer	whose	
+pid	is	008,	sorted	by	home	city	from	Z	to	A.*/
+
+select homecity, dob
+from People
+where pid in
+	(select agentid
+	from Orders
+	where custid = 8)
+order by homecity DESC;
+
+/* 9. Get	the	unique	ids	of	products	ordered	through	any	agent	who	takes	at	least	one	
+order	from	a	customer	in	Montreal,	sorted	by	id	from	highest	to	lowest.	(This	is	not	
+the	same	as	asking	for	ids	of	products	ordered	by	customers	in	Montreal.)*/
 
 
+select DISTINCT prodid
+from Orders
+where agentid in
+	(select agentid
+	from Orders
+	where custid in
+		(select pid
+		from people
+		where homecity = 'Montreal'))
+order by prodid DESC;
 
+
+/* 10. Get	the	last	name	and	home	city	for	all	customers	who	place	orders	through	agents	in	
+Chilliwack	or	Oslo	in	order	by	last	name	from	A	to	Z.*/
+
+
+select lastname,homecity
+from People
+where pid in
+	(select custid 
+	from Orders
+	where agentid in
+		(select pid
+		from People
+		where homeCity = 'Chilliwack' or homecity = 'Oslo'))
+order by lastname ASC;
+	
+
+
+	
+	
 	
 	
 
@@ -202,8 +275,3 @@ order by custid ASC;
 
 
 
-select *
-from Products;
-
-select *
-from Orders;
