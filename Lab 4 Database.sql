@@ -129,6 +129,8 @@ VALUES            (1011,     '2024-01-22',    001,     002, 'p01',             1
                   (1025,     '2022-04-01',    008,     003, 'p07',              888,    799.11),
                   (1026,     '2022-05-04',    008,     005, 'p03',              808,  47277.29);
 
+
+---Shannon Maier, Feb 13, Lab 4 SubQueries Sequel
 ---1. Get all the People data for people who are customers.
 
 select *
