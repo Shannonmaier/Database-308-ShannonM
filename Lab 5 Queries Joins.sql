@@ -133,7 +133,7 @@ VALUES            (1011,     '2024-01-22',    001,     002, 'p01',             1
 /* 1. Show	all	the	People	data	(and	only	people	data)	for	people	who	are	customers.	
 Use	joins	this	time;	no	subqueries.*/
 
-select firstname, lastname, suffix, homecity,dob
+select People.*
 from People
 inner join Customers on people.pid = customers.pid;
 
@@ -141,17 +141,18 @@ inner join Customers on people.pid = customers.pid;
 /* 2. Show	all	the	People	data	(and	only	the	people	data)	for	people	who	are	agents.	
 Use	joins	this	time;	no	subqueries.*/
 
-select firstname, lastname, suffix, homecity,dob
+select People.*
 from People
 inner join Agents on people.pid = agents.pid;
 
 
 /* 3. Show	all	People	and	Agent	data	for	people	who	are	both	customers	and	agents.	
-Use	joins	this	time;	no	subqueries. */
+Use	joins	this	time;	no	subqueries. */ 
 
+---This is wrong 
 select *
-from People
-inner join Agents on people.pid = agents.pid;
+from People p inner join Agents a on p.pid = a.pid
+			  inner join Customers c on p.pid = c.pid;
 
 /* 4.  Show	the	first	name	of	customers	who	have	never	placed	an	order.	Use	subqueries. */
 
@@ -170,11 +171,58 @@ one	outer	join. */
 
 select distinct firstName
 from People
-inner join Customers on people.pid = customers.pid
-left join Orders on customers.pid = orders.custid
+	inner join Customers on people.pid = customers.pid
+	left join Orders on customers.pid = orders.custid
 where orders.custid is NULL;
 
 
+/*6. Show	the	id	and	commission	percent	of	Agents	who	booked	an	order	for	the	
+Customer	whose	id	is	008,	sorted	by	commission	percent	from	high	to	low.	Use	joins;	
+no	subqueries. */
+
+select DISTINCT pid, commissionPct 
+from Agents
+	inner join Orders on agents.pid = orders.agentId
+where orders.custid = 8
+order by commissionPct DESC;
+
+
+/*7. Show	the	last	name,	home	city,	and	commission	percent	of	Agents	who	booked	an	
+order	for	the	customer	whose	id	is	001,	sorted	by	commission	percent	from	high	to	
+low.	Use	joins. */
+
+select DISTINCT lastname, homecity, commissionPct 
+from Agents
+	inner join Orders on agents.pid = orders.agentId
+	inner join People on orders.agentid = people.pid
+where orders.custid = 1
+order by commissionPct DESC;
+
+
+/* 8. Show	the	last	name	and	home	city	of	customers	who	live	in	the	city	that	makes	the	
+fewest	different	kinds	of	products.		(Hint:	Use	count	and	group	by	on	the	Products	
+table.	You	may	need	limit	as	well.)*/
+
+
+select firstname, lastname, homecity
+from Customers
+	inner join People on customers.pid = people.pid
+	inner join Products on People.homecity = products.city
+	inner join (select COUNT(prodid), city
+				from products
+				GROUP BY city
+				order by count ASC
+				LIMIT 1)
+				as minCity on products.city = minCity.city;
+				
+/* 9. Show	the	name	and	id	of	all	Products	ordered	through	any	Agent	who	booked	at	least	
+one	order	for	a	Customer	in	Arlington,	sorted	by	product	name	from	A	to	Z.	You	can	
+use	joins	or	subqueries.	Better	yet,	impress	me	by	doing	it	both	ways. */				
+		
+
+
+	
+	
 
 
 	
