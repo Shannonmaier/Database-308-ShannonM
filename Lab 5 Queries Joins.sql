@@ -218,10 +218,46 @@ from Customers
 /* 9. Show	the	name	and	id	of	all	Products	ordered	through	any	Agent	who	booked	at	least	
 one	order	for	a	Customer	in	Arlington,	sorted	by	product	name	from	A	to	Z.	You	can	
 use	joins	or	subqueries.	Better	yet,	impress	me	by	doing	it	both	ways. */				
-		
+
+select DISTINCT prodid, name
+from Products
+where prodid in
+	(select prodid
+	from Orders
+	where agentid in
+		(select agentid
+		from Orders
+		where custid in
+			(select pid
+			from people
+			where homecity = 'Arlington')))
+order by name ASC;
+
+
+
+/* 10. Show	the	first	and	last	name	of	customers	and	agents	living	in	the	same	city,	along	
+with	the	name	of	their	shared	city.	(Living	in	a	city	with	yourself	does	not	count,	so	
+exclude	those	from	your	results.) */
 
 
 	
+select distinct p1.firstname, p1.lastname, p2.firstname, p2.lastname, p1.homecity
+from People as p1
+	join People as p2 on p1.homecity = p2.homecity AND p1.pid != p2.pid
+where p1.pid in 
+	(select pid 
+	 from Customers) 
+AND p2.pid in 
+	(select pid 
+	 from Agents);
+	
+
+
+
+	
+	
+
+
 	
 
 
