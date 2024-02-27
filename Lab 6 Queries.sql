@@ -256,10 +256,58 @@ from PeopleAgents;
 /* 9. Display	the	first	and	last	name	of	all	customers	who	are	also	agents,	this	time	using	
 the	views	you	created. */
 
-select firstname, lastname
-from People
-	where pid
+select PeopleCustomer.firstname, PeopleCustomer.lastname
+from PeopleCustomer
+	inner join PeopleAgents on PeopleCustomer.pid = PeopleAgents.pid
 where PeopleCustomer.paymentterms is not null AND PeopleAgents.paymentterms is not null;
+
+
+
+/*10 . Compare	your	SQL	in	#7	(no	views)	and	#9	(using	views).	The	output	is	the	same.	
+How	does	that	work?	What	is	the	database	server	doing	internally	when	it	processes	
+the	#9	query? 
+
+   -The output is the same in both #7 and #9 becuase they both combine the People, Customers, and Agents tables
+   in select statments in some way to query the same information
+   In the number 9 query, you can see the database combining the People and Customer data and the People and 
+   Agent data to look through the views. The views make the sql easier to understand, but require the 
+   same amount of work on the engine side.
+
+*/
+
+/* 11. . [Bonus]	What’s	the	difference	between	a	LEFT	OUTER	JOIN	and	a	RIGHT	OUTER	
+JOIN?	Give	example	queries	in	SQL	to	demonstrate.	(Feel	free	to	use	the	CAP	database	
+to	make	your	points	here.) 
+
+	- A LEFT OUTER join takes all the data from the table that is name first in the join statment, and 
+	only the data that matches (based on the on operator) from the table on the right side of the join
+	statement. All other fields will be left null from the second table. The RIGHT OUTER JOIN is the 
+	opposite of this. It takesall the data from the table that isnamed second in the join statement, 
+	and only the data from the fields that match in the left table. All fields that do not match from 
+	the second table will be null.
+
+*/
+
+---Some Example Queries
+
+select * 
+from People
+	left join Customers on People.pid = Customers.pid;
+	
+select * 
+from People
+	right join Customers on People.pid = Customers.pid;	
+
+-----
+
+
+	
+	
+	
+	
+
+
+
 	
 
 
